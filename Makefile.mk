@@ -1,5 +1,5 @@
 .PHONY: python_deps
-python_deps: $(PYENV_ROOT)
+python_deps:
 	pip install --upgrade PyYAML
 	pip install gibson2 numpngw
 	pip install git+https://github.com/Healthcare-Robotics/assistive-gym.git
