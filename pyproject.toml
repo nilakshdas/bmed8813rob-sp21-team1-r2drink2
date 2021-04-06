@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "r2drink2"
+version = "0.0.0"
+description = "Shared Autonomy for Hydration Management of Older Adults"
+authors = ["Reine Bassong", "Nilaksh Das", "Shreyans D Mehta", "Diya P Mitra", "David N Williams"]
+
+
+[tool.poetry.dependencies]
+python = "~3.7"
+PyYAML = "~5.4"
+numpngw = "0.0.8"
+gibson2 = "1.0.1"
+
+
+[tool.poetry.dev-dependencies]
+jupyterlab = "^1.2.6"
+
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
