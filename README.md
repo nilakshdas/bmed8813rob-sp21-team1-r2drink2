@@ -15,8 +15,7 @@ Now, in PowerShell (run as administrator), execute the following commands one at
 
 ```powershell
 cd path\to\bmed8813rob-sp21-team1-r2drink2
-
-make base_deps
+Set-ExecutionPolicy -Scope Process -Force -ExecutionPolicy Bypass; .\setup-win.ps1
 
 # ~~~ RESTART POWERSHELL ~~~ #
 
