@@ -1,38 +1,21 @@
-ifeq ($(OS),Windows_NT) 
-    include setup-win.mk
-else
-    include setup-unix.mk
-endif
+SHELL := /bin/bash
 
-.PHONY: clean_win
-clean_win:
-	powershell "Remove-Item -ErrorAction Ignore poetry.lock; $$null"
-	powershell "Remove-Item -ErrorAction Ignore .venv; $$null"
+.PHONY: all
+all: ubuntu_deps
 
-.PHONY: clean_unix
-clean_unix:
-	rm -rf poetry.lock
-	rm -rf .venv
+.PHONY: install
+install: python_deps download_ig_dataset
 
-poetry.lock: pyproject.toml | $(PYENV_ROOT) $(POETRY_ROOT)
-	poetry lock -vvv
+include setup.mk
 
-.venv: poetry.lock | $(PYENV_ROOT) $(POETRY_ROOT)
-	poetry install -vvv
-	poetry run pip install git+https://github.com/Zackory/bullet3.git
-	poetry run pip install git+https://github.com/Healthcare-Robotics/assistive-gym.git
-	touch $@ # update timestamp
+.PHONY: clean
+clean:
+	rm poetry.lock
+	rm -r $$(head -n 1 .done/venv)
 
-.PHONY: python_deps
-python_deps: .venv
+.PHONY: simulation
+simulation:
+	$(POETRY) run python -m r2drink2.env
 
-.done/download_ig_dataset:
-	poetry run python -m gibson2.utils.assets_utils --download_ig_dataset
-	touch $@
-
-.PHONY: download_ig_dataset
-download_ig_dataset: .done/download_ig_dataset
-
-.PHONY: test_imports
-test_imports:
-	poetry run python -m r2drink2.test
+.PHONY: entrypoint
+entrypoint: simulation
