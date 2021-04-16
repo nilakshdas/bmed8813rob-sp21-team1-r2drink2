@@ -37,12 +37,12 @@ def update_camera(env: AssistiveEnv):
     robot_pos, _ = env.robot.get_base_pos_orient()
 
     camera_eye = np.copy(robot_pos)
-    camera_eye[:2] += 0.5  # x and y axes
+    camera_eye[:2] += 0.8  # x and y axes
     camera_eye[2] += 0.8  # z-axis
 
     camera_target = np.copy(robot_pos)
     camera_target[:2] += 0.4  # x and y axes
-    camera_target[2] = 0  # z-axis
+    camera_target[2] += 0.8  # z-axis
 
     env.setup_camera(
         camera_eye,
