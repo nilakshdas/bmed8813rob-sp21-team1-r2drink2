@@ -1,12 +1,13 @@
 import numpy as np
 
-from assistive_gym.envs.agents.stretch import Stretch
 from assistive_gym.envs.env import AssistiveEnv
+
+from r2drink2.agents.stretch import TeleOpStretch
 
 
 def setup_robot(env: AssistiveEnv):
     robot = env.create_robot(
-        Stretch, controllable_joints="wheel_right", fixed_base=False
+        TeleOpStretch, controllable_joints="wheel_right", fixed_base=False
     )
 
     pos = [0.5, -1, 0.1]
