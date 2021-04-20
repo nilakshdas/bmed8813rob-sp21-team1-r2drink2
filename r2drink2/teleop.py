@@ -48,6 +48,8 @@ class KeyboardTeleOpController(TeleOpController):
         ord("p"): "detract_arm_in",
         ord("k"): "rotate_gripper_left",
         ord("l"): "rotate_gripper_right",
+        ord("h"): "open_gripper",
+        ord("j"): "close_gripper",
     }
 
     def _get_input_keys(self):
