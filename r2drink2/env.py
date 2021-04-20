@@ -4,76 +4,58 @@ from numpngw import write_apng
 
 from assistive_gym.envs.env import AssistiveEnv
 
-
+from r2drink2.camera import TeleOpCamera
 from r2drink2.setup.chair import setup_chair
 from r2drink2.setup.human import setup_human
 from r2drink2.setup.misc import setup_plane
 from r2drink2.setup.robot import setup_robot
 
 
-def create_env():
-    env = AssistiveEnv()
-    env.set_seed(200)
-
-    env.setup_camera(
-        camera_eye=[1.75, -1.5, 2],
-        camera_target=[-0.6, -0.25, 0.4],
-        camera_width=1920 // 4,
-        camera_height=1080 // 4,
-        fov=60,
-    )
-
-    env.reset()
-
-    setup_plane(env)
-    setup_chair(env)
-    setup_human(env)
-    setup_robot(env)
-
-    return env
+OVERHEAD_CAMERA_KWARGS = dict(
+    camera_eye=[1.75, -1.5, 2],
+    camera_target=[-0.6, -0.25, 0.4],
+    camera_width=1920 // 4,
+    camera_height=1080 // 4,
+    fov=60,
+)
 
 
-def update_camera(env: AssistiveEnv):
-    robot_pos, _ = env.robot.get_base_pos_orient()
+class R2Drink2Env(AssistiveEnv):
+    def __init__(self, render=False, seed=42):
+        super().__init__(render=render, seed=seed)
 
-    camera_eye = np.copy(robot_pos)
-    camera_eye[:2] += 0.8  # x and y axes
-    camera_eye[2] += 0.8  # z-axis
+        self.set_seed(seed)
+        self.reset()
 
-    camera_target = np.copy(robot_pos)
-    camera_target[:2] += 0.4  # x and y axes
-    camera_target[2] += 0.8  # z-axis
+        setup_plane(self)
+        setup_chair(self)
+        #  setup_human(self)
+        setup_robot(self)
 
-    env.setup_camera(
-        camera_eye,
-        camera_target,
-        camera_width=1920 // 4,
-        camera_height=1080 // 4,
-        fov=60,
-    )
+        self.setup_camera(**OVERHEAD_CAMERA_KWARGS)
 
 
-def render_env(num_frames=10):
-    env = create_env()
-    update_camera(env)
+def render_env_static(num_frames=100):
+    env = R2Drink2Env()
+    teleop_camera = TeleOpCamera(env)
 
     frames = []
-    done = False
     for _ in range(num_frames):
-        action = np.zeros(len(env.robot.controllable_joint_indices))
-        action[: len(env.robot.wheel_joint_indices) + 1] = 1.0
+        action = env.robot.get_teleop_action(None)
         env.take_step(action)
-        update_camera(env)
-        img, depth = env.get_camera_image_depth()
-        frames.append(img)
+        teleop_camera.pan_left()
+        frames.append(teleop_camera.update_camera_and_get_frame())
+        #  teleop_camera.tilt_down()
+        #  frames.append(teleop_camera.get_frame())
+
     env.disconnect()
 
     return frames
 
 
 def main():
-    frames = render_env()
-    write_apng("output.png", np.uint8(frames), delay=100)
+    frames = render_env_static()
+    write_apng("output.png", frames, delay=100)
 
 
 if __name__ == "__main__":
