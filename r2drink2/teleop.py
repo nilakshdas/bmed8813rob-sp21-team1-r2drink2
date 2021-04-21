@@ -31,10 +31,12 @@ class TeleOpController:
 
 class KeyboardTeleOpController(TeleOpController):
     CAMERA_KEYS = {
-        ord("v"): "tilt_up",
-        ord("b"): "tilt_down",
-        ord("n"): "pan_left",
-        ord("m"): "pan_right",
+        ord("e"): "tilt_up",
+        ord("r"): "tilt_down",
+        ord("d"): "pan_left",
+        ord("f"): "pan_right",
+        ord("q"): "reset_drive_mode",
+        ord("a"): "reset_tool_mode",
     }
 
     ROBOT_KEYS = {
