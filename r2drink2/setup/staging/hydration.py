@@ -1,12 +1,18 @@
 import os
 
+import numpy as np
 import pybullet as p
 
 from assistive_gym.envs.agents.agent import Agent
 from assistive_gym.envs.env import AssistiveEnv
 
 
-def create_hydration_container(env: AssistiveEnv) -> Agent:
+CONTAINER_Y_POSITIONS = [3.6, 4, 4.4]
+CONTAINER_COLORS = ["RED", "GREEN", "BLUE"]
+COLOR_VALUES = dict(RED=[1, 0, 0, 1], GREEN=[0, 1, 0, 1], BLUE=[0, 0, 1, 1])
+
+
+def create_hydration_container(env: AssistiveEnv, pos: list, color: list) -> Agent:
     visual_filename = os.path.join(
         env.directory, "dinnerware", "plastic_coffee_cup.obj"
     )
@@ -17,14 +23,13 @@ def create_hydration_container(env: AssistiveEnv) -> Agent:
     mass = 0.1
     mesh_scale = [0.05] * 3
 
-    pos = [-3.8, 4.2, 0.9]
     orient = [0, 0, 0, 1]
 
     tool_visual = p.createVisualShape(
         shapeType=p.GEOM_MESH,
         fileName=visual_filename,
         meshScale=mesh_scale,
-        rgbaColor=[1, 0, 0, 1],
+        rgbaColor=color,
         physicsClientId=env.id,
     )
     tool_collision = p.createCollisionShape(
@@ -49,4 +54,15 @@ def create_hydration_container(env: AssistiveEnv) -> Agent:
 
 
 def setup_hydration_staging(env: AssistiveEnv):
-    create_hydration_container(env)
+    positions = np.array(CONTAINER_Y_POSITIONS)
+    colors = np.array(CONTAINER_COLORS)
+
+    env.np_random.shuffle(colors)
+    env.np_random.shuffle(positions)
+
+    for y, color in zip(positions.tolist(), colors.tolist()):
+        pos = [-3.8, y, 0.9]
+        col = COLOR_VALUES[color]
+        create_hydration_container(env, pos, col)
+
+    print(env.np_random.choice(colors))
