@@ -4,6 +4,10 @@ from assistive_gym.envs.agents.agent import Agent
 from assistive_gym.envs.env import AssistiveEnv
 
 
+CHAIR_Z_POS = 0.06
+CHAIR_POSITIONS = [np.array([2, 3, CHAIR_Z_POS])]
+
+
 def setup_chair(env: AssistiveEnv):
     env.furniture.init(
         "wheelchair",
@@ -13,5 +17,6 @@ def setup_chair(env: AssistiveEnv):
         wheelchair_mounted=False,
     )
 
-    pos, orient = env.furniture.get_base_pos_orient()
-    env.furniture.set_base_pos_orient(pos + np.array([-0.5, 0, 0]), orient)
+    _, orient = env.furniture.get_base_pos_orient()
+    pos = CHAIR_POSITIONS[env.np_random.choice(np.arange(len(CHAIR_POSITIONS)))]
+    env.furniture.set_base_pos_orient(pos, orient)
