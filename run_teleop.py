@@ -1,9 +1,21 @@
+import argparse
+
 from r2drink2.env import R2Drink2Env
 from r2drink2.teleop import KeyboardTeleOpController
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-s", "--seed", type=int, default=42)
+
+    return parser.parse_args()
+
+
 def main():
-    env = R2Drink2Env(render=True)
+    args = parse_args()
+
+    env = R2Drink2Env(render=True, seed=args.seed)
     teleop_controller = KeyboardTeleOpController(env)
 
     while True:
