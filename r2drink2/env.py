@@ -10,6 +10,7 @@ from r2drink2.setup.human import setup_human
 from r2drink2.setup.misc import setup_plane
 from r2drink2.setup.robot import setup_robot
 from r2drink2.setup.rooms import setup_rooms
+from r2drink2.setup.staging import setup_staging
 
 
 OVERHEAD_CAMERA_KWARGS = dict(
@@ -32,6 +33,7 @@ class R2Drink2Env(AssistiveEnv):
         setup_rooms(self)
         setup_chair(self)
         setup_robot(self)
+        setup_staging(self)
 
         self.setup_camera(**OVERHEAD_CAMERA_KWARGS)
 

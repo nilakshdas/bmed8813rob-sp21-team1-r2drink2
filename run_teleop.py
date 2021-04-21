@@ -1,6 +1,3 @@
-import pybullet as p
-from gym.envs.registration import register
-
 from r2drink2.env import R2Drink2Env
 from r2drink2.teleop import KeyboardTeleOpController
 
