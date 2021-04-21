@@ -121,7 +121,7 @@ def create_room(
     )
 
     # Right wall
-    wall_sw_pos = PointXY(x=ne_pos.x - WALL_WIDTH, y=sw_pos.y)
+    wall_sw_pos = PointXY(x=ne_pos.x, y=sw_pos.y)
     wall_length = ne_pos.y - sw_pos.y
     if ROOM_OPENINGS.SE_RIGHT in openings:
         wall_sw_pos.y += OPENING_LENGTH
