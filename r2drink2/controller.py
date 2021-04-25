@@ -10,16 +10,37 @@ class Stick():
         #   all the way up: y ~= 1.0
         #   all the way left: x = -1.0
         #   all the way right: x ~= 1.0
-        self.x = 0.0
-        self.y = 0.0
+        self.x_right = False
+        self.x_left = False
+        self.y_up = False
+        self.y_down = False
         # normalized signed 16 bit integers to be in the range [-1.0, 1.0]
         self.norm = float(pow(2, 15))
 
     def update_x(self, abs_x):
-        self.x = int(abs_x) / self.norm
+        x_val = int(abs_x)/self.norm
+        if x_val > 0.5:
+            self.x_right = True
+            self.x_left = False
+        elif x_val < -0.5:
+            self.x_right = False
+            self.x_left = True
+        else:
+            self.x_right = False
+            self.x_left = False
+
 
     def update_y(self, abs_y):
-        self.y = -int(abs_y) / self.norm
+        y_val = int(abs_y)/self.norm
+        if y_val > 0.5:
+            self.y_up = True
+            self.y_down = False
+        elif y_val < -0.5:
+            self.y_up = False
+            self.y_down = True
+        else:
+            self.y_up = False
+            self.y_down = False
 
     def print_string(self):
         return 'x: {0:4.2f}, y:{1:4.2f}'.format(x, y)
@@ -56,16 +77,16 @@ class Trigger():
         else:
             # xbox 360
             num_bits = 8
-        self.norm = float(pow(2, num_bits) - 1)
-        self.pulled = 0.0
+        self.pulled = False
 
     def update(self, state):
-        self.pulled = int(state) / self.norm
         # Ensure that the pulled value is not greater than 1.0, which
         # will can happen with the use of an Xbox One controller, if
         # the option was not properly set.
-        if self.pulled > 1.0:
-            self.pulled = 1.0
+        if state > 0:
+            self.pulled = True
+        else:
+            self.pulled = False
 
     def print_string(self):
         return '{0:4.2f}'.format(self.pulled)
@@ -185,19 +206,23 @@ class XboxController():
                             self.right_pad.update(0)
                             self.left_pad.update(1)
 
-                    if self.print_events:
-                        print(event.ev_type, event.code, event.state)
+                    # if self.print_events:
+                    #     print(event.ev_type, event.code, event.state)
                 #time.sleep(0.01)
 
 
 
     def get_state(self):
         with self.lock:
-            state = {'left_stick_x': self.left_stick.x,
-                     'left_stick_y': self.left_stick.y,
-                     'right_stick_x': self.right_stick.x,
-                     'right_stick_y': self.right_stick.y,
-                     'left_stick_button_pressed': self.left_stick_button.pressed,
+            state = {'left_stick_x_right': self.left_stick.x_right,
+                     'left_stick_x_left': self.left_stick.x_left,
+                     'left_stick_y_up': self.left_stick.y_up,
+                     'left_stick_y_down': self.left_stick.y_down,
+                     'right_stick_x_right': self.right_stick.x_right,
+                     'right_stick_x_left': self.right_stick.x_left,
+                     'right_stick_y_up': self.right_stick.y_up,
+                     'right_stick_y_down': self.right_stick.y_down,
+                     'right_stick_button_pressed': self.right_stick_button.pressed,
                      'right_stick_button_pressed': self.right_stick_button.pressed,
                      'bottom_button_pressed': self.bottom_button.pressed,
                      'top_button_pressed': self.top_button.pressed,
