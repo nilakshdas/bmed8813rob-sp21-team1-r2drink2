@@ -114,11 +114,12 @@ class GamepadTeleOpController(TeleOpController):
         self.gamepad.start()
 
     def _get_updated_gamepad_state(self) -> dict:
-        deadzone_sensitivity = 0.5
+        deadzone_sensitivity = 0.4
         trigger_sensitivity = 0.5
 
         def _get_stick_boolean_state(analog_value: float, is_positive: bool) -> bool:
-            sens *= deadzone_sensitivity * (1 if is_positive else -1)
+            sens = deadzone_sensitivity
+            sens *= 1 if is_positive else -1
             if is_positive:
                 return analog_value >= sens
             else:
@@ -142,12 +143,12 @@ class GamepadTeleOpController(TeleOpController):
 
         # right_stick_y_up
         state["right_stick_y_up"] = _get_stick_boolean_state(
-            state["right_stick_y"], is_positive=True
+            state["right_stick_y"], is_positive=False
         )
 
         # right_stick_y_down
         state["right_stick_y_down"] = _get_stick_boolean_state(
-            state["right_stick_y"], is_positive=False
+            state["right_stick_y"], is_positive=True
         )
 
         # right_stick_x_left
@@ -162,12 +163,12 @@ class GamepadTeleOpController(TeleOpController):
 
         # left_stick_y_up
         state["left_stick_y_up"] = _get_stick_boolean_state(
-            state["left_stick_y"], is_positive=True
+            state["left_stick_y"], is_positive=False
         )
 
         # left_stick_y_down
         state["left_stick_y_down"] = _get_stick_boolean_state(
-            state["left_stick_y"], is_positive=False
+            state["left_stick_y"], is_positive=True
         )
 
         # left_stick_x_left
@@ -190,6 +191,8 @@ class GamepadTeleOpController(TeleOpController):
             state["left_trigger_pulled"] >= trigger_sensitivity
         )
 
+        return state
+
     def _get_input_keys(self):
         input_keys = self._get_updated_gamepad_state()
         # print(f"{input_keys}\n---")
@@ -206,7 +209,7 @@ class GamepadTeleOpController(TeleOpController):
 
         return action
 
-    def _update_camera_view(self, input_keys: dict):
+    def _update_camera_view(self, state: dict):
         for key, teleop_fn_name in self.CAMERA_KEYS.items():
             if state[key] is True:
                 teleop_fn = getattr(self.teleop_camera, teleop_fn_name)
