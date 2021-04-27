@@ -47,3 +47,9 @@ optional arguments:
 <div align="center">
 <img src="./assets/staging_area.png" alt="Staging Area" width="100%">
 </div>
+
+### Tool View
+
+<div align="center">
+<img src="./assets/tool_view.png" alt="Tool View" width="100%">
+</div>
