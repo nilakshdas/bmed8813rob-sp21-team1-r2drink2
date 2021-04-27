@@ -27,34 +27,31 @@ class ROOM_OPENINGS:
 
 
 ROOM_CONFIGS = {
-    "staging_area": dict(
+    "bedroom1": dict(
+        sw_pos=PointXY(1, 1), ne_pos=PointXY(5, 5), openings=[ROOM_OPENINGS.SW_LEFT]
+    ),
+    "bedroom2": dict(
+        sw_pos=PointXY(2, -5), ne_pos=PointXY(5, 1), openings=[ROOM_OPENINGS.NW_LEFT]
+    ),
+    "bathroom": dict(
+        sw_pos=PointXY(-1, -5), ne_pos=PointXY(2, -1), openings=[ROOM_OPENINGS.NW_LEFT]
+    ),
+    "closet": dict(
         sw_pos=PointXY(-5, -5),
-        ne_pos=PointXY(-3, -3),
-        openings=[ROOM_OPENINGS.NE_TOP, ROOM_OPENINGS.SE_RIGHT],
+        ne_pos=PointXY(-3, -2),
+        openings=[ROOM_OPENINGS.SE_RIGHT],
     ),
-    "room1": dict(
-        sw_pos=PointXY(-3, -5),
-        ne_pos=PointXY(-1, -1),
-        openings=[ROOM_OPENINGS.SW_LEFT, ROOM_OPENINGS.NE_TOP, ROOM_OPENINGS.SE_RIGHT],
-    ),
-    #  "room2": dict(
-    #      sw_pos=PointXY(-1, -5),
-    #      ne_pos=PointXY(2, -1),
-    #      openings=[ROOM_OPENINGS.SW_LEFT, ROOM_OPENINGS.NE_TOP],
-    #  ),
+    "perimeter": dict(sw_pos=PointXY(-5, -5), ne_pos=PointXY(5, 5), openings=[]),
 }
 
 WALL_WIDTH = 0.1
 WALL_HEIGHT = 2
-OPENING_LENGTH = 0.8
+OPENING_LENGTH = 1.2
 MIN_WALL_LENGTH = (2 * OPENING_LENGTH) + 0.1
 
 
 def create_wall(
-    env: AssistiveEnv,
-    sw_pos: PointXY,
-    wall_length: float,
-    lateral_orientation: bool,
+    env: AssistiveEnv, sw_pos: PointXY, wall_length: float, lateral_orientation: bool
 ):
     transverse_orientation = not lateral_orientation
 
