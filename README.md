@@ -51,5 +51,5 @@ optional arguments:
 ### Tool View
 
 <div align="center">
-<img src="./assets/tool_view.png" alt="Tool View" width="100%">
+<img src="./assets/tool_view.gif" alt="Tool View" width="100%">
 </div>
