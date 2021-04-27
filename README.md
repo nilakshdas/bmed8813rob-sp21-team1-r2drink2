@@ -14,6 +14,19 @@ $ pip install -r requirements.txt
 $ python run_teleop.py
 ```
 
+### CLI
+
+```
+$ python run_teleop.py --help
+usage: run_teleop.py [-h] [-s SEED] [-g] [-f]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SEED, --seed SEED
+  -g, --gamepad
+  -f, --free-view
+```
+
 ### Keymap
 
 <div align="center">
