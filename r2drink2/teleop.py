@@ -14,9 +14,11 @@ KEYBOARD_CODES = dict(UP=65297, DOWN=65298, LEFT=65295, RIGHT=65296)
 
 
 class TeleOpController:
-    def __init__(self, env: AssistiveEnv):
+    def __init__(self, env: AssistiveEnv, free_view: bool = False):
         self.env = env
         self.teleop_camera = TeleOpCamera(env)
+
+        self._free_view = free_view
 
     def _get_input_keys(self) -> dict:
         raise NotImplementedError
@@ -31,7 +33,9 @@ class TeleOpController:
         input_keys = self._get_input_keys()
         action = self._get_robot_action(input_keys)
         self.env.take_step(action)
-        self._update_camera_view(input_keys)
+
+        if not self._free_view:
+            self._update_camera_view(input_keys)
 
 
 class KeyboardTeleOpController(TeleOpController):
@@ -112,8 +116,8 @@ class GamepadTeleOpController(TeleOpController):
         "right_button_pressed": "close_gripper",
     }
 
-    def __init__(self, env: AssistiveEnv):
-        super().__init__(env)
+    def __init__(self, env: AssistiveEnv, free_view: bool = False):
+        super().__init__(env, free_view=free_view)
         self.gamepad = XboxController()
         self.gamepad.start()
 

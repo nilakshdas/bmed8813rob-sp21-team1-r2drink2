@@ -9,6 +9,7 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("-s", "--seed", type=int, default=42)
     parser.add_argument("-g", "--gamepad", action="store_true")
+    parser.add_argument("-f", "--free-view", action="store_true")
 
     return parser.parse_args()
 
@@ -19,7 +20,9 @@ def main():
     env = R2Drink2Env(render=True, seed=args.seed)
 
     teleop_controller = (
-        GamepadTeleOpController(env) if args.gamepad else KeyboardTeleOpController(env)
+        GamepadTeleOpController(env, free_view=args.free_view)
+        if args.gamepad
+        else KeyboardTeleOpController(env, free_view=args.free_view)
     )
 
     while True:
