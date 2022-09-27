@@ -1,24 +1,55 @@
 # R2Drink2
 
 
-## Windows setup
+## Setup
 
-1. Disable Microsoft Store for running python.
-
-> **Settings** > **Manage App Execution Aliases** > *uncheck all options with "python.exe"*
-
-2. Install Microsoft Visual C++ 14.0:
-https://yugdamor.medium.com/microsoft-visual-c-14-0-724d91d00590
-
-
-Now, in PowerShell (run as administrator), execute the following commands one at a time:
-
-```powershell
-cd path\to\bmed8813rob-sp21-team1-r2drink2
-Set-ExecutionPolicy -Scope Process -Force -ExecutionPolicy Bypass; .\setup-win.ps1
-
-# ~~~ RESTART POWERSHELL ~~~ #
-
-make python_deps
-make download_ig_dataset
 ```
+$ pip install -r requirements.txt
+```
+
+
+## Run TeleOp simulation
+
+```
+$ python run_teleop.py
+```
+
+### CLI
+
+```
+$ python run_teleop.py --help
+usage: run_teleop.py [-h] [-s SEED] [-g] [-f]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SEED, --seed SEED
+  -g, --gamepad
+  -f, --free-view
+```
+
+### Keymap
+
+<div align="center">
+<img src="./assets/keymap.png" alt="Keymap" width="100%">
+</div>
+
+
+# Screenshots
+
+### Floor Plan
+
+<div align="center">
+<img src="./assets/floorplan.png" alt="Floor Plan" width="100%">
+</div>
+
+### Staging Area
+
+<div align="center">
+<img src="./assets/staging_area.png" alt="Staging Area" width="100%">
+</div>
+
+### Tool View
+
+<div align="center">
+<img src="./assets/tool_view.gif" alt="Tool View" width="100%">
+</div>

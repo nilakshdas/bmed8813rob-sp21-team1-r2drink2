@@ -1,3 +1,4 @@
 PyYAML
 numpngw
+inputs
 git+https://github.com/Healthcare-Robotics/assistive-gym.git

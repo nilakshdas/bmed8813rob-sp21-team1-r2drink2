@@ -154,3 +154,5 @@ Thumbs.db #thumbnail cache on Windows
 
 .done/*
 !.done/.keep
+
+timings_*.json

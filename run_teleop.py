@@ -1,13 +1,29 @@
-import pybullet as p
-from gym.envs.registration import register
+import argparse
 
 from r2drink2.env import R2Drink2Env
-from r2drink2.teleop import KeyboardTeleOpController
+from r2drink2.teleop import GamepadTeleOpController, KeyboardTeleOpController
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-s", "--seed", type=int, default=42)
+    parser.add_argument("-g", "--gamepad", action="store_true")
+    parser.add_argument("-f", "--free-view", action="store_true")
+
+    return parser.parse_args()
 
 
 def main():
-    env = R2Drink2Env(render=True)
-    teleop_controller = KeyboardTeleOpController(env)
+    args = parse_args()
+
+    env = R2Drink2Env(render=True, seed=args.seed)
+
+    teleop_controller = (
+        GamepadTeleOpController(env, free_view=args.free_view)
+        if args.gamepad
+        else KeyboardTeleOpController(env, free_view=args.free_view)
+    )
 
     while True:
         teleop_controller.take_step()

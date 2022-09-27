@@ -10,8 +10,8 @@ def setup_robot(env: AssistiveEnv):
         TeleOpStretch, controllable_joints="wheel_right", fixed_base=False
     )
 
-    pos = [0.5, -1, 0.1]
-    orient = [0, 0, np.pi / 2.0]
+    pos = [-3, 4, 0.1]
+    orient = [0, 0, -np.pi / 2.0]
     robot.set_base_pos_orient(pos, orient)
 
     return robot
